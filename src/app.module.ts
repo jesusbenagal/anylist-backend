@@ -10,10 +10,10 @@ import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin
 import { ItemsModule } from "./items/items.module";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
-import { SeedModule } from './seed/seed.module';
-import { CommonModule } from './common/common.module';
-import { ListsModule } from './lists/lists.module';
-import { ListItemModule } from './list-item/list-item.module';
+import { SeedModule } from "./seed/seed.module";
+import { CommonModule } from "./common/common.module";
+import { ListsModule } from "./lists/lists.module";
+import { ListItemModule } from "./list-item/list-item.module";
 
 @Module({
   imports: [
@@ -46,6 +46,13 @@ import { ListItemModule } from './list-item/list-item.module';
     // }),
     TypeOrmModule.forRoot({
       type: "postgres",
+      ssl:
+        process.env.STATE === "prod"
+          ? {
+              rejectUnauthorized: false,
+              sslmode: "require",
+            }
+          : (false as any),
       host: process.env.DB_HOST,
       port: +process.env.DB_PORT,
       username: process.env.DB_USERNAME,
